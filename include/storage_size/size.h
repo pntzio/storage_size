@@ -28,6 +28,12 @@ class storage_size {
 public:
 
     /*!
+     * \brief Constructor setting the given size amount of units (ratio numerator) bytes.
+     * \param size The amount of units.
+     */
+    storage_size(std::size_t size) : bytes_(size * Ratio::num) { }
+
+    /*!
      * \brief Constructor for specified number of bytes.
      * \param bytes Number of bytes.
      */
@@ -43,7 +49,7 @@ public:
      * \brief Copy assignment operator for storage_size with any ratio.
      */
     template <typename R>
-    storage_size<Ratio>& operator=(storage_size<R> const& other) { this->bytes_ = other.bytes_; return *this; }
+    storage_size<Ratio>& operator=(storage_size<R> const& other) { this->bytes_ = sz::bytes(other.byte_count()); return *this; }
 
     /*!
      * \brief Conversion operator to \sa bytes.

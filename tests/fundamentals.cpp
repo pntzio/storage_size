@@ -3,6 +3,10 @@
 
 #include <limits>
 
+sz::bytes func(sz::mebibytes size) {
+    return size;
+}
+
 TEST_CASE("fundamentals")
 {
     using sz::operator""_KiB;
@@ -44,7 +48,20 @@ TEST_CASE("fundamentals")
 
             REQUIRE(other.units() == Approx(1.0));
             REQUIRE(other.byte_count() == 1024 * 1024 * 1024);
-            WARN(std::numeric_limits<std::intmax_t>::max());
+        }
+
+        {
+            sz::kibibytes size = 1024_KiB;
+            sz::bytes size_bytes = func(size);
+            REQUIRE(size_bytes.count == 1024 * 1024);
+        }
+
+        {
+            sz::kibibytes size = 100_KiB;
+            sz::mebibytes other = sz::bytes(size.byte_count());
+
+            REQUIRE(size.byte_count() == 100 * 1024);
+            REQUIRE(other.byte_count() == size.byte_count());
         }
     }
 }
